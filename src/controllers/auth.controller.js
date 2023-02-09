@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 
 //Inscription
 exports.register = async (req, res, next) => {
+  let hashedPassword = bcrypt.hashSync(req.body.password, 10);
   const newUser = new User({
     Nom: req.body.Nom,
     Prenom: req.body.Prenom,
@@ -13,29 +14,26 @@ exports.register = async (req, res, next) => {
     CP: req.body.CP,
     Telephone: req.body.Telephone,
     Email: req.body.Email,
-    Password: req.body.Password,
+    Password: hashedPassword,
+    TypeUser: req.body.TypeUser,
   });
   try {
     const newUserToSave = await newUser.save();
-    let testAccount = await nodemailer.createTestAccount();
     let transporter = nodemailer.createTransport({
       host: "smtp.ethereal.email",
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        Email: testAccount.Email, // generated ethereal user
-        Password: testAccount.Password, // generated ethereal password
+        Email: "test@gmail.com", // generated ethereal user
+        Password: "toto", // generated ethereal password
       },
     });
     let info = await transporter.sendMail({
       from: '"Inès GERVAIS" <foo@example.com>', // sender address
-      to: testAccount.Email, // list of receivers
-      subject: "Inscription", // Subject line
-      text: "Vous etes bien inscrit(e) !", // plain text body
-      html: "Vous etes bien inscrit(e)", // html body
+      to: newUser.Email, // list of receivers
+      subject: "Bienvenue", // Subject line
+      html: "Vous etes bien inscrit(e) ! Merci pour votre inscription", // html body
     });
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     return res.send(newUserToSave);
   }
   catch(err) {

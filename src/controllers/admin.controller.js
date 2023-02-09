@@ -32,7 +32,8 @@ exports.updateUser = (req, res) => {
                 message: "Utilisateur introuvable"
             })
         }
-        User.findById(user._id).then(userupdated => {
+        User.findById(user._id)
+        .then(userupdated => {
             res.send(userupdated);
         })
     })
@@ -47,7 +48,8 @@ exports.deleteUser = (req, res) => {
                 message: "Utilisateur introuvable"
             })
         }
-        User.findById(user._id).then(userdeleted => {
+        User.findById(user._id)
+        .then(userdeleted => {
             res.send(userdeleted);
         })
     })

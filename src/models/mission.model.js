@@ -8,12 +8,13 @@ const missionSchema = mongoose.Schema({
         minLength: 2
     },
     Date_debut: {
-        type: Number,
+        type: Date,
         required: true,
-        minLength: 2
+        minLength: 2,
+        default: Date.now,
     },
     Date_fin: {
-        type: Number,
+        type: Date,
         required: true,
         minLength: 2
     },
@@ -31,12 +32,18 @@ const missionSchema = mongoose.Schema({
     Statut: {
         type: String,
         required: true,
-        minLength: 2
+        enum: ['en cours', 'clôturé'],
+        default: 'en cours',
     },
-    wishlist: [
-        { type: mongoose.Schema.Types.ObjectId, ref: 'Metier' },
-        { type: mongoose.Schema.Types.ObjectId, ref: 'Competence' }
-    ]
+    competence: {
+        type: [
+          {
+            type: mongoose.Types.ObjectId,
+            ref: 'Competence',
+          },
+        ],
+        required: [true, 'Une mission doit avoir au moins une compétence'],
+      },
 },
 {
     timestamps: true

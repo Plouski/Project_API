@@ -61,8 +61,9 @@ const userSchema = mongoose.Schema({
     minLength: 8
   },
 
-  Admin: {
+  isAdmin: {
     type: Boolean,
+    required: true,
     default: false,
   },
 
@@ -77,6 +78,11 @@ const userSchema = mongoose.Schema({
     required: true,
     default: false,
   },
+
+  typeUser: {
+    type: 'String',
+    enum: ['Freelance', 'Entreprise'],
+  },
 },
   {
     timestamps: true
@@ -85,7 +91,7 @@ const userSchema = mongoose.Schema({
 
 userSchema.pre('save', function (next) {
   
-  if (!this.isModified("MDP")) {
+  if (!this.isModified("Password")) {
     return next();
   }
 
@@ -94,7 +100,7 @@ userSchema.pre('save', function (next) {
       console.log(err);
       return next(err);
     }
-    this.MDP = hashedPassword
+    this.Password = hashedPassword
     next();
   });
 

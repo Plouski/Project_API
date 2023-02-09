@@ -8,15 +8,23 @@ const freelanceSchema = mongoose.Schema({
     minLength: 2
   },
   Annee_experience: {
-    type: Number,
+    type: Date,
     required: true,
     maxLength: 5,
     minLength: 1
   },
-  wishlist: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'Competence' },
-    { type: mongoose.Schema.Types.ObjectId, ref: 'Metier' }
-  ]
+  competence: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: 'Competence',
+    },
+  ],
+  metier: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: 'Metier',
+    },
+  ],
 },
 {
   timestamps: true

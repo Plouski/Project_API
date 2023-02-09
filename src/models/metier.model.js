@@ -8,6 +8,12 @@ const metierSchema = mongoose.Schema({
     maxLength: 50,
     minLength: 2
   },
+  competence: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: 'Competence',
+    },
+  ],
 },
 {
   timestamps: true
